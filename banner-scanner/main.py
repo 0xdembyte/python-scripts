@@ -39,7 +39,6 @@ threads_amount   = int(threads_amount)
 start_time = time()
 
 # Functions
-
 # ANSI colour codes used for text formatting:
 # 31 - Red
 # 32 - Green
@@ -68,9 +67,6 @@ def scan_banner(port):
                 # 1024 is a standard buffer size
                 banner = web_socket.recv(1024).decode().strip()
             except socket.timeout:
-                # Output that we timed out and recieved no banner
-                output_log("Timeout: No banner recieved", "33")
-
                 # Set the banner to an empty string
                 banner = ""
 
