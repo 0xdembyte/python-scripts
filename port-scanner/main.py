@@ -54,7 +54,7 @@ def connect_socket(port):
             return color_text(f"Port {port} is closed or filtered.", "31")
 
 # Output that we're scanning with the basic details
-print(color_text(f"Scanning {target_host} from port {start_port_range} to {end_port_range} with {threads_amount} threads...", "36"))
+print(color_text(f"Scanning {target_host} from Port {start_port_range} to {end_port_range} with {threads_amount} threads...", "36"))
 
 # Open multithreading with the user defined threads amount
 with ThreadPoolExecutor(max_workers=threads_amount) as executor:
