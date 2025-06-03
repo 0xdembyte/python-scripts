@@ -1,0 +1,65 @@
+# Developer: Demarjio Brady
+# Developed on: 03/06/2025 at 12:59pm
+# Description: This Python script takes 4 inputs (target host, start port range, end port range, and threads amount) 
+#              And scans the target host between the starting and ending port and outputs if the port is open or closed / filtered
+# Imports
+from sys import exit
+from concurrent.futures import ThreadPoolExecutor
+from time import time
+import socket
+
+# Get the target host
+target_host = input("Enter the host you want to target (e.g. google.com or 192.168.1.1): ")
+
+# Check if the target host is empty
+if target_host == "":
+    exit("Target host can't be empty")
+
+# Get the port range
+start_port_range = input("Enter the start port range you want to scan (e.g. 1): ")
+end_port_range   = input("Enter the end port range you want to scan (e.g. 1024): ")
+
+# Get how many threads the user wants to use
+threads_amount   = input("Enter the amount of threads you want to use (e.g. 100): ")
+
+# Check if the port range contains digits only
+if not start_port_range.isdigit() or not end_port_range.isdigit():
+    exit("Port range must contain digits only.")
+
+# Check if the threads amount contains digits only
+if not threads_amount.isdigit():
+    exit("Threads amount must contain digits only.")
+
+# Convert the strings to intergers
+start_port_range = int(start_port_range)
+end_port_range   = int(end_port_range)
+threads_amount   = int(threads_amount)
+
+# Store the start time
+start_time = time()
+
+# Functions
+def connect_socket(port):
+    # Create a socket with IPV4 and TCP
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as web_socket:
+        web_socket.settimeout(1.0)
+        response = web_socket.connect_ex((target_host, port))
+
+        if response == 0:
+            return f"Port {port} is open."
+        else:
+            return f"Port {port} is closed or filtered."
+
+# Output that we're scanning with the basic details
+print(f"Scanning {target_host} from port {start_port_range} to {end_port_range} with {threads_amount} threads...")
+with ThreadPoolExecutor(max_workers=threads_amount) as executor:
+    futures = {executor.submit(connect_socket, port): port for port in range(start_port_range, end_port_range + 1)}
+
+for future in futures:
+    print(future.result())
+
+# Store the end time
+end_time = time()
+
+# Output how long it took for the scan to complete
+print(f"Scan completed in {end_time - start_time:.2f} seconds")
