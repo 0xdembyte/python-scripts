@@ -42,7 +42,7 @@ start_time = time()
 def color_text(text, color_code):
     return f"\033[{color_code}m{text}\033[0m"
 
-def connect_socket(port):
+def scan_ports(port):
     # Create a socket with IPV4 and TCP
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as web_socket:
         web_socket.settimeout(1.0)
@@ -54,11 +54,11 @@ def connect_socket(port):
             return color_text(f"Port {port} is closed or filtered.", "31")
 
 # Output that we're scanning with the basic details
-print(color_text(f"Scanning {target_host} from Port {start_port_range} to {end_port_range} with {threads_amount} threads...", "36"))
+print(color_text(f"Scanning {target_host} from port {start_port_range} to {end_port_range} with {threads_amount} threads...", "36"))
 
 # Open multithreading with the user defined threads amount
 with ThreadPoolExecutor(max_workers=threads_amount) as executor:
-    futures = {executor.submit(connect_socket, port): port for port in range(start_port_range, end_port_range + 1)}
+    futures = {executor.submit(scan_ports, port): port for port in range(start_port_range, end_port_range + 1)}
 
 for future in futures:
     print(future.result())
