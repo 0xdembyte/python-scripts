@@ -38,12 +38,13 @@ threads_amount   = int(threads_amount)
 # Store the start time
 start_time = time()
 
-# Functions
 # ANSI colour codes used for text formatting:
-# 31 - Red
-# 32 - Green
-# 33 - Yellow
-# 36 - Cyan
+COLOR_RED    = 31
+COLOR_GREEN  = 32
+COLOR_YELLOW = 33
+COLOR_CYAN   = 36
+
+# Functions
 def color_text(text, color_code):
     return f"\033[{color_code}m{text}\033[0m"
 
@@ -71,14 +72,14 @@ def scan_banner(port):
                 banner = ""
 
             if banner != "":
-                return color_text(f"[Port {port}] Banner: {banner}", "32")
+                return color_text(f"[Port {port}] Banner: {banner}", COLOR_GREEN)
             else:
-                return color_text(f"[Port {port}] Banner: No banner recieved", "33")
+                return color_text(f"[Port {port}] Banner: No banner recieved", COLOR_YELLOW)
         else:
-            return color_text(f"[Port {port}] is closed or filtered.", "31")
+            return color_text(f"[Port {port}] is closed or filtered.", COLOR_RED)
 
 # Output that we're scanning with the basic details
-output_log(f"Scanning {target_host} from Port {start_port_range} to {end_port_range} with {threads_amount} threads...", "36")
+output_log(f"Scanning {target_host} from port {start_port_range} to {end_port_range} with {threads_amount} threads...", COLOR_CYAN)
 
 # Open multithreading with the user defined threads amount
 with ThreadPoolExecutor(max_workers=threads_amount) as executor:
@@ -92,4 +93,4 @@ for future in futures:
 end_time = time()
 
 # Output how long it took for the scan to complete
-output_log(f"Scan completed in {end_time - start_time:.2f} seconds", 36)
+output_log(f"Scan completed in {end_time - start_time:.2f} seconds", COLOR_CYAN)
