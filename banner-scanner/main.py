@@ -93,4 +93,4 @@ for future in futures:
 end_time = time()
 
 # Output how long it took for the scan to complete
-output_log(f"Scan completed in {end_time - start_time:.2f} seconds", COLOR_CYAN)
+output_log(f"Scan completed in {end_time - start_time:.2f} seconds | Ports scanned count: {len(futures)}", COLOR_CYAN)
