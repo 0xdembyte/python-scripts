@@ -31,6 +31,8 @@ def build_prefix_length(subnet_mask):
 subnet_mask = input("Subnet mask: ")
 print(build_prefix_length(subnet_mask))
 
-# Example I/O
-# Input: Subnet mask: 127.0.0.1
-# Output: /8
+# Example
+# Input: 255.255.255.0
+# Binary: 11111111.11111111.11111111.00000000
+# Active bits: 24
+# Output: /24
